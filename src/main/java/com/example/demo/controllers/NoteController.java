@@ -32,10 +32,11 @@ public class NoteController {
 	}
 
 	@GetMapping("/notes")
-	public ResponseEntity<List<Note>> allNotes() {
-		List<Note> notes = noteService.findAll();
-
-		return new ResponseEntity<>(notes, HttpStatus.OK);
+	public ResponseEntity<List<Note>> allNotes(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+		Pageable paging = PageRequest.of(page, size);
+		Page<Note> pageTuts;
+		pageTuts = noteService.findAll(paging);
+		return new ResponseEntity<>(pageTuts, HttpStatus.OK);
 	}
 
 	@GetMapping("/notes/{id}")
